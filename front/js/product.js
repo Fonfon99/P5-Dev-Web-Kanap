@@ -26,10 +26,14 @@ for (let e of tabColor) {
    option.textContent = e; //<option>couleur</option>
    option.setAttribute('value',e); //<option value="couleur">couleur</option>
    colors.appendChild(option);
+}
+});
 
-};
+const btn = document.getElementById('addToCart');
+btn.addEventListener("click", addCart('_id'));
     
-})
+
+
 
 
 
