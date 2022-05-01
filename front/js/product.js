@@ -65,7 +65,7 @@ btn.onclick = function() { // ajout du produit dans le panier au click
     item.imageUrl = product.imageUrl;
     item.quantity = document.getElementById('quantity').value;
     item.color = document.getElementById('colors').value;
-    item.price = product.price;
+    // item.price = product.price;
     addCart(item);
 window.location = 'cart.html';  // redirection du client vers la page panier
 }
