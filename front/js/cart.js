@@ -35,7 +35,7 @@ function getNumberProduct() {
 //------------------------------------------------------------------------------------------------
 // on calcule le prix total du panier
 function getTotalPrice() {
-  let cart = getCart();
+  
   let total = 0;
   for (let item of cart) {
     total += item.quantity * item.price;
@@ -126,17 +126,26 @@ function errorMessageTest() {
   return test;
 }
 //------------------------------------------------------------------------------------------------
+//
 async function getPrice(id) {
-  return new Promise((resolve) => {
-    let url = "http://localhost:3000/api/products";
-    fetch(url)
+    
+    return new Promise((resolve) => {
+      let url = "http://localhost:3000/api/products/" + id;
+      console.log(id);
+      fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      resolve(data.price);
-    });
+        
+      console.log(data.price);
+      resolve(data.price)
+    })
+    
   });
-}
+};
+
+
 //------------------------------------------------------------------------------------------------
+
 
 let cart = getCart();
 const prenom = document.getElementById("firstName"); // on vise la valeur du champ de saisie en excluant les espaces
@@ -148,22 +157,24 @@ const email = document.getElementById("email");
 const regExpNum = /\d/;
 const regExpEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+(\.([a-zA-Z]){2,})$/;
 
-function affiche() {
+async function affiche() {
   const totalPrice = document.getElementById("totalPrice");
   const totalQuantity = document.getElementById("totalQuantity");
-
   let cartItems = document.getElementById("cart__items");
   cartItems.innerHTML = "";
   let template = document.querySelector("#tpl");
   let i = 0;
   for (let item of cart) {
     // pour chaque produit dans le panier on clone le template
+    let price = await getPrice(item._id);
     let clone = document.importNode(template.content, true);
     clone.querySelector("img").setAttribute("src", item.imageUrl, item.altTxt);
     clone.querySelector("h2").textContent = item.name;
     clone.querySelector(".couleur").textContent = item.color;
-    clone.querySelector(".prix").textContent = item.price;
+    clone.querySelector(".prix").textContent = price;
     clone.querySelector(".itemQuantity").value = item.quantity;
+    item.price = price;
+    
 
     let deleteItem = clone.querySelector(".deleteItem");
     let article = clone.querySelector("article");
@@ -200,14 +211,17 @@ function affiche() {
 
   totalQuantity.textContent = getNumberProduct(); // on affiche le nombre de produits
   totalPrice.textContent = getTotalPrice(); // on affiche le prix total
-}
+};
 
 affiche();
 
 document.getElementById("order").onclick = function (e) {
   // on creer une fonction au click sur le bouton commander
   e.preventDefault();
-  if (cart.length === 0) alert("Vous n'avez commandé aucun article");
+  if (cart.length === 0) {
+    alert("Vous n'avez commandé aucun article")
+    return;
+  };
 
   document.getElementById("firstNameErrorMsg").textContent = ""; // on vide les messages d'erreurs
   document.getElementById("lastNameErrorMsg").textContent = "";
@@ -220,5 +234,5 @@ document.getElementById("order").onclick = function (e) {
 
   if (test) {
     sendOrder();
-  }
-};
+  };
+}
