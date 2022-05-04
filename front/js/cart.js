@@ -126,7 +126,7 @@ function errorMessageTest() {
   return test;
 }
 //------------------------------------------------------------------------------------------------
-//
+//On recupere le prix du produit dans l'API pour ne pas le stocker dans le localstorage
 async function getPrice(id) {
     
     return new Promise((resolve) => {
@@ -142,18 +142,16 @@ async function getPrice(id) {
     
   });
 };
-
-
 //------------------------------------------------------------------------------------------------
 
-
 let cart = getCart();
-const prenom = document.getElementById("firstName"); // on vise la valeur du champ de saisie en excluant les espaces
+// on vise la valeur du champ de saisie en excluant les espaces
+const prenom = document.getElementById("firstName"); 
 const nom = document.getElementById("lastName");
 const address = document.getElementById("address");
 const ville = document.getElementById("city");
 const email = document.getElementById("email");
-
+// on cree les regexp du formulaire
 const regExpNum = /\d/;
 const regExpEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+(\.([a-zA-Z]){2,})$/;
 
