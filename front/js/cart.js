@@ -15,14 +15,6 @@ function getCart() {
   }
 }
 //------------------------------------------------------------------------------------------------
-// on enleve un produit du panier
-function remove(item) {
-  let cart = getCart();
-  cart = cart.filter((p) => p._id != item._id);
-  saveCart(cart);
-}
-
-//------------------------------------------------------------------------------------------------
 // on compte le nombre de produits dans le panier
 function getNumberProduct() {
   let cart = getCart();
