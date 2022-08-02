@@ -10,8 +10,7 @@ function getCart() {
   if (cart == null) {
     return [];
   } else {
-    for (let p of cart) 
-    return JSON.parse(cart);
+    for (let p of cart) return JSON.parse(cart);
   }
 }
 //------------------------------------------------------------------------------------------------
@@ -27,7 +26,6 @@ function getNumberProduct() {
 //------------------------------------------------------------------------------------------------
 // on calcule le prix total du panier
 function getTotalPrice() {
-  
   let total = 0;
   for (let item of cart) {
     total += item.quantity * item.price;
@@ -58,7 +56,6 @@ function bodyRequest() {
 // on envoi l'objet (contact + ID produit) au serveur avec la methode POST
 function sendOrder() {
   const body = bodyRequest();
-  console.log(body);
   fetch("http://localhost:3000/api/products/order", {
     method: "POST",
     headers: {
@@ -68,7 +65,6 @@ function sendOrder() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       let id = data.orderId;
       window.location = "confirmation.html?orderid=" + id;
     })
@@ -120,25 +116,20 @@ function errorMessageTest() {
 //------------------------------------------------------------------------------------------------
 //On recupere le prix du produit dans l'API pour ne pas le stocker dans le localstorage
 async function getPrice(id) {
-    
-    return new Promise((resolve) => {
-      let url = "http://localhost:3000/api/products/" + id;
-      console.log(id);
-      fetch(url)
-    .then((res) => res.json())
-    .then((data) => {
-        
-      console.log(data.price);
-      resolve(data.price)
-    })
-    
+  return new Promise((resolve) => {
+    let url = "http://localhost:3000/api/products/" + id;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        resolve(data.price);
+      });
   });
-};
+}
 //------------------------------------------------------------------------------------------------
 
 let cart = getCart();
 // on vise la valeur du champ de saisie en excluant les espaces
-const prenom = document.getElementById("firstName"); 
+const prenom = document.getElementById("firstName");
 const nom = document.getElementById("lastName");
 const address = document.getElementById("address");
 const ville = document.getElementById("city");
@@ -164,7 +155,6 @@ async function affiche() {
     clone.querySelector(".prix").textContent = price;
     clone.querySelector(".itemQuantity").value = item.quantity;
     item.price = price;
-    
 
     let deleteItem = clone.querySelector(".deleteItem");
     let article = clone.querySelector("article");
@@ -192,7 +182,6 @@ async function affiche() {
       cart[indice].quantity = this.value; // on change pour la nouvelle quantite
       saveCart(cart);
       affiche(); // on reaffiche le panier avec la nouvelle quantite
-      console.log(this.value);
     };
 
     cartItems.append(clone);
@@ -201,7 +190,7 @@ async function affiche() {
 
   totalQuantity.textContent = getNumberProduct(); // on affiche le nombre de produits
   totalPrice.textContent = getTotalPrice(); // on affiche le prix total
-};
+}
 
 affiche();
 
@@ -209,9 +198,9 @@ document.getElementById("order").onclick = function (e) {
   // on creer une fonction au click sur le bouton commander
   e.preventDefault();
   if (cart.length === 0) {
-    alert("Vous n'avez commandé aucun article")
+    alert("Vous n'avez commandé aucun article");
     return;
-  };
+  }
 
   document.getElementById("firstNameErrorMsg").textContent = ""; // on vide les messages d'erreurs
   document.getElementById("lastNameErrorMsg").textContent = "";
@@ -224,5 +213,5 @@ document.getElementById("order").onclick = function (e) {
 
   if (test) {
     sendOrder();
-  };
-}
+  }
+};
